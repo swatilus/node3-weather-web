@@ -1,5 +1,6 @@
 const request = require('request')
 
+
 const forecast = (lat, long, callback) => {
     const url = `https://api.darksky.net/forecast/8fe843bfc8e3393fae4eb109a680b767/${lat},${long}?units=si`
 
@@ -9,7 +10,12 @@ const forecast = (lat, long, callback) => {
         } else if (body.error) {
             callback('Unable to find location')
         } else {
-            callback(undefined, `${body.daily.data[0].summary} It's currently ${body.currently.temperature} degree out. There is a ${body.currently.precipProbability}% change of rain`)
+            const date = new Date (body.currently.time*1000)
+            date.toLocaleString()
+            callback(undefined, `${body.daily.data[0].summary} It's currently ${body.currently.temperature} degree out. 
+            There is a ${body.currently.precipProbability}% change of rain.
+            Highest Temperature: ${body.daily.data[0].apparentTemperatureHigh}.
+            Lowest Temperature: ${body.daily.data[0].apparentTemperatureLow}.`)
         }
     })
 }
